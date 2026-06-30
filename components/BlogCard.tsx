@@ -19,10 +19,13 @@ export default function BlogCard({ post }: BlogCardProps) {
       {hero && (
         <Link href={`/journal/${post.slug}`} className="block h-56 overflow-hidden">
           <img
-            src={`${hero}?w=800&h=560&fit=crop&auto=format,compress`}
+            src={`${hero}?w=800&h=560&fit=crop&auto=format,compress&dpr=2&q=60`}
             alt={title}
             width={400}
             height={280}
+            loading="lazy"
+            decoding="async"
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         </Link>

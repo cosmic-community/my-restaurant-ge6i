@@ -64,21 +64,22 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   return (
     <article>
       {/* Hero */}
-      <section className="relative h-80 md:h-[28rem] overflow-hidden">
+      <section className="relative h-80 md:h-[28rem] overflow-hidden bg-noir-900">
         {hero && (
           <img
             src={`${hero}?w=2400&h=1120&fit=crop&auto=format,compress`}
             alt={title}
-            className="w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full object-cover"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-b from-noir-900/50 to-noir-900" />
+        {/* Scrim: keep the photo visible while preserving title legibility */}
+        <div className="absolute inset-0 bg-gradient-to-b from-noir-900/30 via-noir-900/40 to-noir-900/85" />
         <div className="absolute inset-0 flex flex-col items-center justify-end text-center px-6 pb-12">
-          <h1 className="font-serif text-3xl md:text-5xl font-bold gold-text max-w-4xl">
+          <h1 className="font-serif text-3xl md:text-5xl font-bold gold-text max-w-4xl drop-shadow-lg">
             {title}
           </h1>
           {author && (
-            <p className="text-cream/60 text-sm mt-4 uppercase tracking-widest">
+            <p className="text-cream/70 text-sm mt-4 uppercase tracking-widest drop-shadow">
               {author}
             </p>
           )}
