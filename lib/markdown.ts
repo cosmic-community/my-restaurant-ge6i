@@ -63,8 +63,8 @@ export function renderMarkdown(markdown: string): string {
     const headingMatch = line.match(/^(#{1,6})\s+(.*)$/)
     if (headingMatch) {
       flushAll()
-      const level = Math.min(headingMatch[1].length, 6)
-      html.push(`<h${level}>${inline(headingMatch[2])}</h${level}>`)
+      const level = Math.min(headingMatch[1]!.length, 6)
+      html.push(`<h${level}>${inline(headingMatch[2]!)}</h${level}>`)
       continue
     }
 
@@ -79,7 +79,7 @@ export function renderMarkdown(markdown: string): string {
     if (listMatch) {
       flushParagraph()
       flushQuote()
-      listItems.push(listMatch[1])
+      listItems.push(listMatch[1]!)
       continue
     }
 
