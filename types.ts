@@ -62,6 +62,21 @@ export interface Review extends CosmicObject {
   };
 }
 
+export interface BlogPost extends CosmicObject {
+  type: 'blog-posts';
+  metadata: {
+    excerpt?: string;
+    content?: string;
+    primary_keyword?: string;
+    seo_title?: string;
+    seo_description?: string;
+    hero_image?: string;
+    author_name?: string;
+    related_location?: Location | string;
+    reservation_cta_text?: string;
+  };
+}
+
 export interface CosmicResponse<T> {
   objects: T[];
   total: number;
