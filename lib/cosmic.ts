@@ -1,5 +1,5 @@
 import { createBucketClient } from '@cosmicjs/sdk'
-import type { MenuCategory, MenuItem, Location, Review } from '@/types'
+import type { MenuCategory, MenuItem, Location, Review, BlogPost } from '@/types'
 
 export const cosmic = createBucketClient({
   bucketSlug: process.env.COSMIC_BUCKET_SLUG as string,
@@ -95,4 +95,42 @@ export async function getReviews(): Promise<Review[]> {
     if (hasStatus(error) && error.status === 404) return []
     throw new Error('Failed to fetch reviews')
   }
+}
+
+export async function getBlogPosts(): Promise<BlogPost[]> {
+  try {
+    const response = await cosmic.objects
+      .find({ type: 'blog-posts' })
+      .props(['id', 'title', 'slug', 'metadata', 'created_at'])
+      .depth(1)
+    const posts = response.objects as BlogPost[]
+    return posts.sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    )
+  } catch (error) {
+    if (hasStatus(error) && error.status === 404) return []
+    throw new Error('Failed to fetch blog posts')
+  }
+}
+
+export async function getBlogPost(slug: string): Promise<BlogPost | null> {
+  try {
+    const response = await cosmic.objects
+      .findOne({ type: 'blog-posts', slug })
+      .props(['id', 'title', 'slug', 'metadata', 'created_at'])
+      .depth(1)
+    return response.object as BlogPost
+  } catch (error) {
+    if (hasStatus(error) && error.status === 404) return null
+    throw new Error('Failed to fetch blog post')
+  }
+}
+
+// Resolve a blog post hero_image (stored as a bare media filename) to a full imgix URL
+export function getHeroImageUrl(heroImage: unknown): string {
+  const value = getMetafieldValue(heroImage)
+  if (!value) return ''
+  if (value.startsWith('http')) return value
+  return `https://imgix.cosmicjs.com/${value}`
 }
